@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Eventos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Gestión de Eventos</h1>
+
+    <div class="input-container">
+        <label for="uploadFile">Archivo de Excel</label>
+        <input type="file" id="uploadFile" />
+        
+        <label for="googleSite">Link de Google Site</label>
+        <input type="text" id="googleSite" placeholder="Agrega el link del Google Site" />
+        
+        <button class="btn btn-primary" onclick="generateLinks()">Generar Links</button>
+        <button class="btn btn-secondary" onclick="clearList()">Borrar Lista</button>
+        <button class="btn btn-export" onclick="exportList()">Exportar</button>
+    </div>
+
+    <table id="eventTable">
+        <thead>
+            <tr>
+                <th>Nombres</th>
+                <th>Pases</th>
+                <th>Frase</th>
+                <th>Link de Google Site</th>
+                <th>Link de Invitación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
