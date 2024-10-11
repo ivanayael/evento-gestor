@@ -11,12 +11,13 @@
 
     <div class="input-container">
         <label for="uploadFile">Archivo de Excel</label>
-        <input type="file" id="uploadFile" />
+        <input type="file" id="uploadFile" accept=".xls,.xlsx" />
         
         <label for="googleSite">Link de Google Site</label>
         <input type="text" id="googleSite" placeholder="Agrega el link del Google Site" />
         
-        <button class="btn btn-primary" onclick="generateLinks()">Generar Links</button>
+        <button class="btn btn-primary" onclick="uploadFile()">Cargar</button>
+        <button class="btn btn-primary" onclick="generateLink()">Generar Links</button>
         <button class="btn btn-secondary" onclick="clearList()">Borrar Lista</button>
         <button class="btn btn-export" onclick="exportList()">Exportar</button>
     </div>
@@ -32,9 +33,15 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+            <tr>
+                <td colspan="6" style="text-align:center;">No hay datos disponibles.</td>
+            </tr>
+        </tbody>
     </table>
 
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}">
+        
+    </script>
 </body>
 </html>
