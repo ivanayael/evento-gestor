@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Eventos</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+   
 </head>
 <body>
     <h1>Gestión de Eventos</h1>
 
     <div class="input-container">
         <label for="uploadFile">Archivo de Excel</label>
-        <input type="file" id="uploadFile" accept=".xls,.xlsx" />
+        <input type="file" id="uploadFile" accept=".xls,.xlsx" aria-label="Seleccionar archivo de Excel" />
         
         <label for="googleSite">Link de Google Site</label>
-        <input type="text" id="googleSite" placeholder="Agrega el link del Google Site" />
+        <input type="text" id="googleSite" placeholder="Agrega el link del Google Site" required aria-label="Campo de link de Google Site" />
         
-        <button class="btn btn-primary" onclick="uploadFile()">Cargar</button>
-        <button class="btn btn-primary" onclick="generateLink()">Generar Links</button>
-        <button class="btn btn-secondary" onclick="clearList()">Borrar Lista</button>
-        <button class="btn btn-export" onclick="exportList()">Exportar</button>
+        <button class="btn btn-primary" id="btnUpload" onclick="uploadFile()">Cargar Excel</button>
+        <button class="btn btn-secondary"  id="btnClear" onclick="clearList()">Borrar Lista</button>
+        <button class="btn btn-export"  id="btnExport" onclick="exportList()" disabled>Exportar</button>
     </div>
 
     <table id="eventTable">
@@ -39,9 +39,8 @@
             </tr>
         </tbody>
     </table>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
 
-    <script src="{{ url_for('static', filename='scripts.js') }}">
-        
-    </script>
 </body>
 </html>

@@ -1,4 +1,3 @@
-/* Ajustes generales */
 body {
     font-family: Arial, sans-serif;
     padding: 20px;
@@ -8,7 +7,6 @@ body {
 h1 {
     text-align: center;
     color: #3d3d3d;
-    font-size: 24px;
 }
 
 .input-container {
@@ -16,7 +14,6 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    flex-wrap: wrap; /* Para permitir flexibilidad en dispositivos móviles */
 }
 
 .input-container input {
@@ -24,14 +21,11 @@ h1 {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 100%; /* Para mejorar la usabilidad en dispositivos pequeños */
-    max-width: 270px; /* Limita el ancho en pantallas grandes */
 }
 
 .btn {
     padding: 10px 20px;
     margin-left: 10px;
-    margin-top: 10px; /* Mejora el espacio en dispositivos móviles */
     border: none;
     border-radius: 5px;
     font-size: 16px;
@@ -96,12 +90,6 @@ td input[type="text"] {
     cursor: pointer;
 }
 
-/* Mejora de accesibilidad */
-input:focus, button:focus {
-    outline: 2px solid #5a3921; /* Resalta el foco en inputs y botones */
-}
-
-/* Estilos responsivos para pantallas pequeñas */
 @media only screen and (max-width: 600px) {
     .input-container {
         flex-direction: column;
@@ -110,65 +98,13 @@ input:focus, button:focus {
 
     .input-container input {
         margin-bottom: 10px;
-
-        width: 100%; /* Los inputs ocuparán el ancho completo */
-    }
-
-    .btn {
-        width: 100%; /* Botones ocuparán todo el ancho disponible */
     }
 
     table {
         font-size: 12px;
     }
 
-    th, td {
-        padding: 10px; /* Reduce el padding para pantallas pequeñas */
-    }
-
     button {
         font-size: 14px;
     }
-
-    /* Tabla apilada en móviles */
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-
-    table thead {
-        display: none;
-    }
-
-    table tr {
-        margin-bottom: 10px;
-    }
-
-    table td {
-        position: relative;
-        padding-left: 50%;
-        text-align: right;
-    }
-
-    table td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        width: 50%;
-        padding-left: 10px;
-        text-align: left;
-        font-weight: bold;
-    }
-}
-
-/* Mejora de accesibilidad y usabilidad */
-input:invalid {
-    border-color: red;
-}
-
-button:hover:enabled {
-    background-color: #d35400;
-}
-
-button:disabled {
-    background-color: #ccc;
 }

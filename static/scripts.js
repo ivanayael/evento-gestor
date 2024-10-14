@@ -1,97 +1,100 @@
-function uploadFile() {
-    const fileInput = document.getElementById('uploadFile');
-    var siteLink = document.getElementById('googleSite');
+async function uploadFile() {
+    const fileInput = document.getElementById('uploadFile'); 
+    const siteLink = document.getElementById('googleSite');
     const file = fileInput.files[0];
-    var myLink = siteLink.value;
+    const myLink = siteLink.value;
+    
 
-    if (!file) {
-        alert('Por favor, selecciona un archivo de Excel.');
+    if (!file || myLink == '') {
+        swal("Error al intentar cargar el archivo", "selecciona el archivo de Excel con Nombre, Pases y Frase y agrega el link de Google Site para procesar la información para las invitaciones.", "error");
         return;
     }
 
     const formData = new FormData();
     formData.append('excelFile', file);
 
-    fetch('/upload', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
+    try {
+        const response = await fetch('/upload', { method: 'POST', body: formData });
         if (!response.ok) {
-            return response.json().then(err => { throw new Error(err.error); });
+            const err = await response.json();
+            throw new Error(err.error);
         }
-        return response.json();
-    })
-    .then(data => {
+
+        const data = await response.json();
         const tableBody = document.querySelector('#eventTable tbody');
         tableBody.innerHTML = ''; // Limpiar la tabla
 
         data.forEach(evento => {
-
-            const row = document.createElement('tr');
-       
-            var nombre = `${evento.Nombre}`; 
-
-            var pases  = `${evento.Pases}`; 
-          
-            var frases  = `${evento.Frase}`; 
-          
-            var URLLink = encodeURI(myLink + "&n=" + nombre  + "&p=" + pases + "&f=" + frases);
- 
-            row.innerHTML = `
-                <td>${nombre}</td>
-                <td>${pases}</td>
-                <td>${frases}</td>               
-                <td><input type="text" value="${myLink}" placeholder="Añadir enlace de Google Site" /></td>
-                <td><input type="text" value="${encodeURI(URLLink)}" placeholder="Link de Invitacion" /></td>
-                <td><a href="value="${encodeURI(URLLink)}" class="btn-copy">Copiar</a></td>
-            `;
-            tableBody.appendChild(row);
+            tableBody.appendChild(crearFila(evento, myLink));
+            document.getElementById('btnExport').disabled = false;
         });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al cargar el archivo: ' + error.message);
-    });
+    } catch (error) {
+        swal("Error al cargar el archivo de Excel de los Eventos", "Por favor, vuelva a intentarlo. Selecciona el archivo de Excel con Nombre, Pases y Frase. Error:" + error.message, "error");
+    }
 }
 
-function exportList() {
-    const rows = document.querySelectorAll('#eventTable tbody tr:not(:first-child)');
-    const data = [];
+function crearFila(evento, myLink) {
+    const row = document.createElement('tr');
+    const nombre = `${evento.Nombre}`;
+    const pases = `${evento.Pases}`;
+    const frases = `${evento.Frase}`;
+    const URLLink = encodeURI(`${myLink}&n=${nombre}&p=${pases}&f=${frases}`);
 
-    rows.forEach(row => {
+    row.innerHTML = `
+        <td>${nombre}</td>
+        <td>${pases}</td>
+        <td>${frases}</td>
+        <td><input type="text" value="${myLink}" name="GoogleLink" /></td>
+        <td><input type="text" value="${URLLink}" name="InvitationLink" /></td>
+        <td><button onclick="copiarContenido(this)" class="btn-copy">Copiar</button></td>
+    `;
+    return row;
+
+}
+
+function copiarContenido(element) {
+    const invitationLink = element.parentElement.parentElement.querySelector('input[name="InvitationLink"]');
+    invitationLink.select();
+    var text = invitationLink.value;
+    navigator.clipboard.writeText(text).then(function() {
+        swal("Link Copiado", "El link de invitación fué copiado al portapapeles. Link: " + invitationLink.value, "success");
+    }, function(err) {
+        swal("Link No Copiado", "No se pudo copiar el link de invitación al portapapeles. Por favor, revise que el campo no esté en blanco y vuelva a intentarlo", "error");
+    });
+   
+}
+
+async function exportList() {
+    const rows = document.querySelectorAll('#eventTable tbody tr');
+    const data = Array.from(rows).map(row => {
         const nombre = row.children[0].textContent;
         const pases = row.children[1].textContent;
         const frase = row.children[2].textContent;
-        const linkurl = row.children[3].textContent;
-        const linkinvitacion = row.children[4].textContent;
-        data.push({ Nombre: nombre, Pases: pases, Frase: frase, linkurl: linkurl, linkinvitacion: linkinvitacion });
+        const googleLink = row.querySelector('input[name="GoogleLink"]').value;
+        const invitationLink = row.querySelector('input[name="InvitationLink"]').value;
+        return { Nombre: nombre, Pases: pases, Frase: frase, GoogleLink: googleLink, InvitationLink: invitationLink };
     });
 
-    fetch('/export', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
-    .then(response => response.blob())
-    .then(blob => {
+    try {
+        const response = await fetch('/export', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'eventos.xlsx';
+        a.download = 'eventos_exportados.xlsx';
         document.body.appendChild(a);
         a.click();
         a.remove();
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al exportar la lista: ' + error.message);
-    });
+        swal("Exito al Exportar", "Archivo de Excel Exportado. Revise la carpeta de Descargas o Downloads", "success");
+    } catch (error) {
+        swal("Error al Exportar el Excel", "No se pudo exportar el archivo de excel. Por favor, revise que la lista no esté en blanco y vuelva a intentarlo. Detalle del error: " + error.message, "error");
+    }
 }
 
 function clearList() {
-    const tableBody = document.querySelector('#eventTable tbody');
-    tableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No hay datos disponibles.</td></tr>`;
+    document.querySelector('#eventTable tbody').innerHTML = `<tr><td colspan="6" style="text-align:center;">No hay datos disponibles.</td></tr>`;
 }
