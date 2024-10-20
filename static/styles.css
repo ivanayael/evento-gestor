@@ -101,6 +101,12 @@ input:focus, button:focus {
     outline: 2px solid #5a3921; /* Resalta el foco en inputs y botones */
 }
 
+#panel-configuracion {
+    width: 300px; /* Ajusta el ancho según prefieras */
+    margin: 0 auto; /* Esto centra el panel horizontalmente */
+    text-align: left; /* Esto asegura que el texto esté alineado a la izquierda */
+}
+
 /* Estilos responsivos para pantallas pequeñas */
 @media only screen and (max-width: 600px) {
     .input-container {
@@ -110,7 +116,6 @@ input:focus, button:focus {
 
     .input-container input {
         margin-bottom: 10px;
-
         width: 100%; /* Los inputs ocuparán el ancho completo */
     }
 
@@ -118,19 +123,20 @@ input:focus, button:focus {
         width: 100%; /* Botones ocuparán todo el ancho disponible */
     }
 
+
+    /*
     table {
         font-size: 12px;
     }
 
     th, td {
-        padding: 10px; /* Reduce el padding para pantallas pequeñas */
+        padding: 10px; 
     }
 
     button {
         font-size: 14px;
     }
 
-    /* Tabla apilada en móviles */
     table, thead, tbody, th, td, tr {
         display: block;
     }
@@ -158,7 +164,8 @@ input:focus, button:focus {
         text-align: left;
         font-weight: bold;
     }
-}
+    */
+} 
 
 /* Mejora de accesibilidad y usabilidad */
 input:invalid {
@@ -172,3 +179,6 @@ button:hover:enabled {
 button:disabled {
     background-color: #ccc;
 }
+
+
+

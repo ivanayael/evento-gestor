@@ -3,10 +3,27 @@ async function uploadFile() {
     const siteLink = document.getElementById('googleSite');
     const file = fileInput.files[0];
     const myLink = siteLink.value;
-    
+    const codigoHTML = document.getElementById('mensaje-copiado');
+    const personalizacion = codigoHTML.innerText || codigoHTML.innerHTML;
+
 
     if (!file || myLink == '') {
         swal("Error al intentar cargar el archivo", "selecciona el archivo de Excel con Nombre, Pases y Frase y agrega el link de Google Site para procesar la información para las invitaciones.", "error");
+        return;
+    }
+
+    function isValidUrl(string) {
+        try {
+          new URL(string);
+          return true;
+        } catch (err) {
+          return false;
+        }
+      }
+      
+     if (!isValidUrl(myLink)) 
+     {
+        swal("Error en la direccion del Link ingresada", "El link de Google Site no tiene el formato correcto. Por favor revisar y volver a ingresar.", "error");
         return;
     }
 
@@ -25,7 +42,7 @@ async function uploadFile() {
         tableBody.innerHTML = ''; // Limpiar la tabla
 
         data.forEach(evento => {
-            tableBody.appendChild(crearFila(evento, myLink));
+            tableBody.appendChild(crearFila(evento, myLink, personalizacion));
             document.getElementById('btnExport').disabled = false;
         });
     } catch (error) {
@@ -33,12 +50,14 @@ async function uploadFile() {
     }
 }
 
-function crearFila(evento, myLink) {
+function crearFila(evento, myLink, personalizacion) {
     const row = document.createElement('tr');
     const nombre = `${evento.Nombre}`;
     const pases = `${evento.Pases}`;
     const frases = `${evento.Frase}`;
-    const URLLink = encodeURI(`${myLink}&n=${nombre}&p=${pases}&f=${frases}`);
+    const URLLink = encodeURI(`https://tufiesta.netlify.app/?${personalizacion}&n=${nombre}&p=${pases}&f=${frases}&l=${myLink}`);
+
+    
 
     row.innerHTML = `
         <td>${nombre}</td>
