@@ -67,6 +67,7 @@ table, th, td {
 
 th, td {
     padding: 15px;
+    border: 1px solid grey;
 }
 
 th {
@@ -123,6 +124,43 @@ input:focus, button:focus {
         width: 100%; /* Botones ocuparán todo el ancho disponible */
     }
 
+    table {
+        width: 100%;
+        font-size: .9em;
+    }
+
+    table tr{
+        display: flex;
+        flex-direction: column;
+        border: 1px solid grey;
+        padding: 1em;
+    }
+
+    table thead{
+        display: none;
+    }
+
+    table td,
+    table th{
+        border:none;
+    }
+
+    table td[data-titulo]{
+        display: flex;
+    }
+
+    table td[data-titulo]::before{
+        content: attr (data-titulo);
+        width: 90px;
+        color:#5a3921;
+        font-weight: bold;
+    }
+
+
+
+
+
+
 
     /*
     table {
@@ -164,6 +202,9 @@ input:focus, button:focus {
         text-align: left;
         font-weight: bold;
     }
+
+    HACER EL RESPONSIVE CON ESTE TUTORIAL
+    https://www.youtube.com/watch?v=I5cub9PxobU&t=1207s
     */
 } 
 
