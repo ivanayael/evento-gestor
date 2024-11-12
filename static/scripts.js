@@ -1,3 +1,101 @@
+ // Función para obtener los parámetros de la URL
+ function obtenerParametrosDeURL() {
+    const parametros = new URLSearchParams(window.location.search);
+    const nombre = parametros.get('n') || 'La invitación no tiene nombre';
+    const pases = parametros.get('p') || 'No tiene pases disponibles';
+    const frase = parametros.get('f') || '';
+    const link = parametros.get('l') || '#';
+    const estilos = {
+        colorH1: parametros.get('colorH1'),
+        colorP: parametros.get('colorP'),
+        colorA: parametros.get('colorA'),
+        bgColor: parametros.get('bgColor'),
+        fontFamily: parametros.get('fontFamily'),
+    };
+    return { nombre, pases, frase, link, estilos };
+}
+
+// Función para generar la tarjeta
+function generarTarjeta() {
+    const datos = obtenerParametrosDeURL();
+    const tarjetaHTML = `
+        <div>
+            <div style="text-align: center;">
+                <h1 data-titulo="nombre" class="nombre-t">Nombre en la Tarjeta</h1>
+                <p data-titulo="pases" class="pase-t"><strong>Tenés</strong><br>2 pases</p>
+                <p data-titulo="frase" class="pase-t"><strong>Frase de Ejemplo</strong></p>
+                <a href="#" class="button bt" target="_blank">Mirá el Evento</a>
+            </div>
+        </div>
+    `;
+    const contenedor = document.getElementById('tarjeta-container');
+    contenedor.innerHTML = tarjetaHTML;
+
+    // Aplicar estilos personalizados si están presentes en la URL
+    aplicarEstilos(datos.estilos);
+}
+
+// Función para aplicar los estilos guardados
+function aplicarEstilos(estilos) {
+    if (estilos.colorH1) document.querySelector('h1.nombre-t').style.color = estilos.colorH1;
+    if (estilos.colorP) document.querySelectorAll('p.pase-t').forEach(p => p.style.color = estilos.colorP);
+    if (estilos.colorA) document.querySelector('a.bt').style.color = estilos.colorA;
+    if (estilos.bgColor) document.querySelector('div.tarjeta-container').style.backgroundColor = estilos.bgColor;
+    if (estilos.fontFamily) document.querySelector('div.tarjeta-container').style.fontFamily = estilos.fontFamily;
+}
+
+// Función para obtener los parámetros de los estilos seleccionados
+function obtenerParametrosDeEstilos() {
+    const colorH1 = document.getElementById('color-h1').value;
+    const colorP = document.getElementById('color-p').value;
+    const colorA = document.getElementById('color-a').value;
+    const bgColor = document.getElementById('bg-color').value;
+    const fontFamily = document.getElementById('font-family').value;
+
+    const parametros = new URLSearchParams();
+    parametros.set('colorH1', colorH1);
+    parametros.set('colorP', colorP);
+    parametros.set('colorA', colorA);
+    parametros.set('bgColor', bgColor);
+    parametros.set('fontFamily', fontFamily);
+
+    return parametros.toString(); // Corregido a `toString()`
+}
+
+// Función para aplicar los cambios en tiempo real
+function aplicarCambios() {
+    const colorH1 = document.getElementById('color-h1').value;
+    const colorP = document.getElementById('color-p').value;
+    const colorA = document.getElementById('color-a').value;
+    const bgColor = document.getElementById('bg-color').value;
+    const fontFamily = document.getElementById('font-family').value;
+
+    document.querySelector('h1.nombre-t').style.color = colorH1;
+    document.querySelectorAll('p.pase-t').forEach(p => p.style.color = colorP);
+    document.querySelector('a.bt').style.color = colorA;
+    document.querySelector('div.tarjeta-container').style.backgroundColor = bgColor;
+    document.querySelector('div.tarjeta-container').style.fontFamily = fontFamily;
+
+    const parametrosConFormato = obtenerParametrosDeEstilos();
+    document.getElementById('mensaje-copiado').innerText = parametrosConFormato; // Mostrar parámetros copiados
+    document.getElementById("mensaje-copiado").style.visibility = "hidden"; 
+}
+
+// Inicializar la página con la tarjeta y configuración
+window.onload = function() {
+    generarTarjeta();
+
+    // Escuchar los cambios en los controles del panel de configuración y aplicarlos en tiempo real
+    document.getElementById('color-h1').addEventListener('input', aplicarCambios);
+    document.getElementById('color-p').addEventListener('input', aplicarCambios);
+    document.getElementById('color-a').addEventListener('input', aplicarCambios);
+    document.getElementById('bg-color').addEventListener('input', aplicarCambios);
+    document.getElementById('font-family').addEventListener('change', aplicarCambios);
+}
+
+
+//Archivo viejo//
+
 async function uploadFile() {
     const fileInput = document.getElementById('uploadFile'); 
     const siteLink = document.getElementById('googleSite');
