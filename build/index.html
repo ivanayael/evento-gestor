@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gestión de Eventos</title>
+        <!-- Estilos -->
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+
+    <body>
+        <!-- Título principal -->
+        <h1>Gestión de Eventos</h1>
+
+            <!-- Contenedor de la tarjeta personalizada -->
+            <div class="tarjeta-container">
+                <div id="tarjeta-container"></div>
+            </div>
+
+            <!-- Panel de configuración -->
+            <div id="panel-configuracion">
+                <h2>Panel de Configuración</h2>
+
+                <!-- Controles de color y tipografía -->
+                <label for="color-h1">Color del Título H1:</label>
+                <input type="color" id="color-h1"><br>
+
+                <label for="color-p">Color del Párrafo:</label>
+                <input type="color" id="color-p"><br>
+
+                <label for="color-a">Color del Enlace:</label>
+                <input type="color" id="color-a"><br>
+
+                <label for="bg-color">Color del Fondo:</label>
+                <input type="color" id="bg-color"><br>
+
+                <label for="font-family">Tipografía:</label>
+                <select id="font-family">
+                    <option value="'Roboto', sans-serif">Roboto</option>
+                    <option value="'Arial', sans-serif">Arial</option>
+                    <option value="'Courier New', Courier, monospace">Courier New</option>
+                </select>
+
+                <!-- Mensaje que mostrará los parámetros copiados -->
+                <p id="mensaje-copiado" class="visibility: hidden"></p> 
+                </div>
+                <!-- Controles para carga de archivo y acciones en la tabla -->
+                <div class="input-container">
+                    <label for="uploadFile">Archivo de Excel</label>
+                    <input type="file" id="uploadFile" accept=".xls,.xlsx" aria-label="Seleccionar archivo de Excel" />
+                    
+                    <label for="googleSite">Link de Google Site</label>
+                    <input type="text" id="googleSite" placeholder="Agrega el link del Google Site" required aria-label="Campo de link de Google Site" />
+
+                    <!-- Botones para cargar archivo, borrar lista y exportar -->
+                    <button class="btn btn-primary" id="btnUpload" onclick="uploadFile()">Cargar Excel</button>
+                    <button class="btn btn-secondary" id="btnClear" onclick="clearList()">Borrar Lista</button>
+                    <button class="btn btn-export" id="btnExport" onclick="exportList()" disabled>Exportar</button>
+                </div>
+
+                <!-- Tabla para mostrar datos de eventos -->
+                <table id="eventTable">
+                    <thead>
+                        <tr>
+                            <th>Nombres</th>
+                            <th>Pases</th>
+                            <th>Frase</th>
+                            <th>Link de Google Site</th>
+                            <th>Link de Invitación</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" style="text-align:center;">No hay datos disponibles.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Librería externa para alertas -->
+                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                <!-- Archivo de scripts para manejo de eventos -->
+                <script src="/static/scripts.js" defer></script>
+
+            </body>
+        </html>
